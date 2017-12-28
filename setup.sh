@@ -30,3 +30,7 @@ npm install babel-core --save
 gulp
 
 npm install mongoose --save
+
+# See all processes running on PORT 3000 and kill that process
+sudo lsof -i tcp:3000
+kill -9 51904

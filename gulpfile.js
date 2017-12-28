@@ -14,14 +14,13 @@ gulp.task('transformES6', () => {
                 './node_modules/**/*.js',
             ]
         }))
-        .pipe(concat('bundle.js'))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./dist'))
 });
 
 gulp.task('default', ['transformES6'], () => {
    nodemon({
-       script: './dist/bundle.js',
+       script: './dist/app.js',
        ext: 'js',
        env: {
            PORT: 3000
