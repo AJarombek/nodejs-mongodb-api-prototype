@@ -17,6 +17,13 @@
   },
   "homepage": "https://github.com/AJarombek/nodejs-mongodb-api-prototype#readme",
   "dependencies": {
-    "express": "^4.16.2"
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "express": "^4.16.2",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-nodemon": "^2.2.1",
+    "gulp-sourcemaps": "^2.6.2"
   }
 }
