@@ -28,3 +28,5 @@ npm install babel-core --save
 
 # You can now run the project by simply calling 'gulp'
 gulp
+
+npm install mongoose --save
