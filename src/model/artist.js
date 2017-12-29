@@ -4,6 +4,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const SongSchema = new Schema({
+    name: {
+        type: String,
+        time: true,
+        required: true
+    },
+    song_id: Schema.Types.ObjectId
+});
+
 const AlbumSchema = new Schema({
     name: {
         type: String,
@@ -17,15 +26,6 @@ const AlbumSchema = new Schema({
     songs : [{
         type: SongSchema
     }]
-});
-
-const SongSchema = new Schema({
-    name: {
-        type: String,
-        time: true,
-        required: true
-    },
-    song_id: Schema.Types.ObjectId
 });
 
 const ArtistSchema = new Schema({

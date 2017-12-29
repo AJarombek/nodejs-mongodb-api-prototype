@@ -10,11 +10,8 @@ const routes = (Song) => {
     songRouter.route('/')
         .get((req, res) => {
 
-            Song.find((err, songs) => {
-                if (err) {
-                    console.error(err);
-                    res.status(500).send(err);
-                } else {
+            Song.find().exec()
+                .then((songs) => {
                     res.format({
                         'application/json': () => {
                             res.json(songs);
@@ -23,43 +20,47 @@ const routes = (Song) => {
                             res.render('xml/songs', {songs: songs});
                         }
                     });
-                }
-            });
+                })
+                .catch((err) => {
+                    console.error(err);
+                    res.status(500).send(err);
+                });
         })
         .post((req, res) => {
             const song = new Song(req.body);
             console.info(song);
 
-            song.save((err) => {
-                if (err) {
-                    res.status(500).send(err);
-                } else {
+            song.save()
+                .then(() => {
                     res.format({
-                        'application/json': () => {
-                            res.status(201).json(song);
-                        },
-                        'application/xml': () => {
-                            res.status(201).render('xml/song', {song: song});
-                        }
-                    });
-                }
+                    'application/json': () => {
+                        res.status(201).json(song);
+                    },
+                    'application/xml': () => {
+                        res.status(201).render('xml/song', {song: song});
+                    }
+                });
+            }).catch((err) => {
+                res.status(500).send(err);
             });
         });
 
     // Middleware that will be called before handing off to the route
     songRouter.use('/:id', (req, res, next) => {
-        Song.findById(req.params.id, (err, song) => {
-            if (err) {
-                res.status(500).send(err);
-            } else if (song) {
-                req.song = song;
+        Song.findById(req.params.id).exec()
+            .then((song) => {
+                if (song) {
+                    req.song = song;
 
-                // Pass req along to the route() function
-                next();
-            } else {
-                res.status(404).send('No Song Found with Given ID');
-            }
-        });
+                    // Pass req along to the route() function
+                    next();
+                } else {
+                    res.status(404).send('No Song Found with Given ID');
+                }
+            })
+            .catch((err) => {
+                res.status(500).send(err);
+            });
     });
 
     songRouter.route('/:id')
@@ -78,12 +79,18 @@ const routes = (Song) => {
             req.song.artist = req.body.artist;
             req.song.album = req.body.album;
             req.song.type = req.body.type;
-            req.song.release_date = new Date(req.body.release_date);
             req.song.best_lyric = req.body.best_lyric;
-            req.song.save((err) => {
-                if (err) {
-                    res.status(500).send(err);
-                } else {
+
+            // Validate that a proper date has been entered
+            const dateRegex = /^\d{2}-\d{2}-\d{4}$/;
+            const date = req.body.release_date;
+
+            if (dateRegex.test(date)) {
+                req.song.release_date = new Date(req.body.release_date);
+            }
+
+            req.song.save()
+                .then(() => {
                     res.format({
                         'application/json': () => {
                             res.json(req.song);
@@ -92,8 +99,10 @@ const routes = (Song) => {
                             res.render('xml/song', {song: req.song});
                         }
                     });
-                }
-            });
+                })
+                .catch((err) => {
+                    res.status(500).send(err);
+                });
         })
         .patch((req, res) => {
             if (req.body._id)
@@ -109,10 +118,8 @@ const routes = (Song) => {
                 }
             }
 
-            req.song.save((err) => {
-                if (err) {
-                    res.status(500).send(err);
-                } else {
+            req.song.save()
+                .then(() => {
                     res.format({
                         'application/json': () => {
                             res.json(req.song);
@@ -121,17 +128,19 @@ const routes = (Song) => {
                             res.render('xml/song', {song: req.song});
                         }
                     });
-                }
-            })
+                })
+                .catch((err) => {
+                    res.status(500).send(err);
+                });
         })
         .delete((req, res) => {
-            req.song.remove((err) => {
-                if (err) {
-                    res.status(500).send(err);
-                } else {
+            req.song.remove()
+                .then(() => {
                     res.status(204).send();
-                }
-            })
+                })
+                .catch((err) => {
+                    res.status(500).send(err);
+                });
         });
 
     return songRouter;

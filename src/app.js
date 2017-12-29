@@ -13,13 +13,13 @@ const songRouter = require('./route/songRouter')(Song);
 const artistRouter = require('./route/artistRouter')(Artist);
 const userRouter = require('./route/userRouter')(User);
 
+// Replace mongoose use of callbacks with promises
+mongoose.Promise = global.Promise;
+
 const mongoDB = 'mongodb://127.0.0.1/music_api';
 mongoose.connect(mongoDB, {
     useMongoClient: true
 });
-
-// Replace mongoose use of callbacks with promises
-// mongoose.Promise = global.Promise;
 
 const db = mongoose.connection;
 
