@@ -31,7 +31,14 @@ const routes = (Song) => {
                 if (err) {
                     res.status(500).send(err);
                 } else {
-                    res.status(201).json(song);
+                    res.format({
+                        'application/json': () => {
+                            res.status(201).json(song);
+                        },
+                        'application/xml': () => {
+                            res.status(201).render('xml/song', {song: song});
+                        }
+                    });
                 }
             });
         });
@@ -54,7 +61,14 @@ const routes = (Song) => {
 
     songRouter.route('/:id')
         .get((req, res) => {
-            res.json(req.song);
+            res.format({
+                'application/json': () => {
+                    res.json(req.song);
+                },
+                'application/xml': () => {
+                    res.render('xml/song', {song: req.song});
+                }
+            });
         })
         .put((req, res) => {
             req.song.title = req.body.title;
@@ -67,7 +81,14 @@ const routes = (Song) => {
                 if (err) {
                     res.status(500).send(err);
                 } else {
-                    res.json(req.song);
+                    res.format({
+                        'application/json': () => {
+                            res.json(req.song);
+                        },
+                        'application/xml': () => {
+                            res.render('xml/song', {song: req.song});
+                        }
+                    });
                 }
             });
         })
@@ -89,7 +110,14 @@ const routes = (Song) => {
                 if (err) {
                     res.status(500).send(err);
                 } else {
-                    res.json(req.song);
+                    res.format({
+                        'application/json': () => {
+                            res.json(req.song);
+                        },
+                        'application/xml': () => {
+                            res.render('xml/song', {song: req.song});
+                        }
+                    });
                 }
             })
         })
@@ -98,7 +126,7 @@ const routes = (Song) => {
                 if (err) {
                     res.status(500).send(err);
                 } else {
-                    res.status(204).send('Song Removed');
+                    res.status(204).send();
                 }
             })
         });

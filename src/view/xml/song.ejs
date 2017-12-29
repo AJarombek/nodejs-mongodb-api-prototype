@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<song>
+    <_id><%= song._id %></_id>
+    <title><%= song.title %></title>
+    <artist><%= song.artist %></artist>
+    <album><%= song.album %></album>
+    <type><%= song.type %></type>
+    <release_date><%= song.release_date %></release_date>
+    <best_lyric><%= song.best_lyric %></best_lyric>
+    <comments>
+        <% for (var j = 0; j < song.comments.length; j++) { %>
+        <comment>
+            <username><%= song.comments[j].username %></username>
+            <date><%= song.comments[j].date %></date>
+            <content><%= song.comments[j].content %></content>
+        </comment>
+        <% } %>
+    </comments>
+</song>

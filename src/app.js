@@ -21,7 +21,7 @@ const db = mongoose.connection;
 
 const app = express();
 
-// Use effective javascript templating (ejs) for rendering xml
+// Use embedded javascript templating (ejs) for rendering xml
 app.set('views', __dirname + '/view');
 app.set('view engine', 'ejs');
 

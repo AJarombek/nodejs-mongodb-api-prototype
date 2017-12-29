@@ -1,6 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <songs>
     <% for (var i = 0; i < songs.length; i++) { %>
         <song>
+            <_id><%= songs[i]._id %></_id>
             <title><%= songs[i].title %></title>
             <artist><%= songs[i].artist %></artist>
             <album><%= songs[i].album %></album>
