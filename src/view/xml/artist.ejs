@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<artist>
+    <_id><%= artist._id %></_id>
+    <name><%= artist.name %></name>
+    <genre><%= artist.genre %></genre>
+    <albums>
+        <% for (var j = 0; j < artist.albums.length; j++) { %>
+        <album>
+            <name><%= artist.albums[j].name %></name>
+            <release_date><%= artist.albums[j].release_date %></release_date>
+            <songs>
+                <% for (var k = 0; k < artist.albums[j].songs.length; k++) { %>
+                <song>
+                    <name><%= artist.albums[j].songs[k].name %></name>
+                    <song_id><%= artist.albums[j].songs[k].song_id %></song_id>
+                </song>
+                <% } %>
+            </songs>
+        </album>
+        <% } %>
+    </albums>
+</artist>

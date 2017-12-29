@@ -51,6 +51,7 @@ gulp.task('transpile', () => {
         .pipe(livereload());
 });
 
+// The move task takes out ejs files used for xml generation and puts them in the dist folder
 gulp.task('move', () => {
     gulp.src('./src/view/**/*.ejs')
         .pipe(gulp.dest('./dist/view'));

@@ -1,8 +1,12 @@
+// Author: Andrew Jarombek
+// Date: 12/28/2017
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CommentSchema = new Schema({
     username: String,
+    user_id: Schema.Types.ObjectId,
     date: {
         type: Date,
         default: Date.now()
@@ -23,16 +27,21 @@ const SongSchema = new Schema({
         type: String,
         trim: true
     },
+    album_id: Schema.Types.ObjectId,
     artist: {
         type: String,
         trim: true,
         required: true
     },
+    artist_id: Schema.Types.ObjectId,
     type: {
         type: String,
         enum: ['a', 'j', 'aj']
     },
-    release_date: String,
+    release_date: {
+        type: Date,
+        default: Date.now()
+    },
     best_lyric: String,
     comments: [{
         type: CommentSchema

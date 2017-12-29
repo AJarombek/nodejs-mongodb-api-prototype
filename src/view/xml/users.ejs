@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<users>
+    <% for (var i = 0; i < users.length; i++) { %>
+    <user>
+        <_id><%= users[i]._id %></_id>
+        <username><%= users[i].username %></username>
+    </user>
+    <% } %>
+</users>
