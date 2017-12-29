@@ -27,7 +27,6 @@ const SongSchema = new Schema({
         type: String,
         trim: true
     },
-    album_id: Schema.Types.ObjectId,
     artist: {
         type: String,
         trim: true,
