@@ -10,7 +10,7 @@ mongoose.connect(mongoDB, {
 });
 
 // Replace mongoose use of callbacks with promises
-mongoose.Promise = global.Promise;
+// mongoose.Promise = global.Promise;
 
 const db = mongoose.connection;
 const Song = require('./model/song');
@@ -23,14 +23,16 @@ const songRouter = express.Router();
 
 songRouter.route('/songs')
     .get((req, res) => {
+
         Song.find((err, songs) => {
             if (err) {
                 console.error(err);
                 res.send(err);
             } else {
+                console.info(songs);
                 res.json(songs);
             }
-        })
+        });
     });
 
 app.use('/api', songRouter);

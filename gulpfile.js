@@ -2,23 +2,18 @@ const gulp = require('gulp');
 const nodemon = require('gulp-nodemon');
 const babel = require('gulp-babel');
 const sourcemaps = require('gulp-sourcemaps');
-const concat = require('gulp-concat');
 
-gulp.task('transformES6', () => {
+gulp.task('transpile', () => {
     gulp.src('./src/**/*.js')
         .pipe(sourcemaps.init())
         .pipe(babel({
-            presets: ['env'],
-            ignore: [
-                './gulpfile.js',
-                './node_modules/**/*.js',
-            ]
+            presets: ['env']
         }))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./dist'))
 });
 
-gulp.task('default', ['transformES6'], () => {
+gulp.task('default', ['transpile'], () => {
    nodemon({
        script: './dist/app.js',
        ext: 'js',
@@ -27,9 +22,11 @@ gulp.task('default', ['transformES6'], () => {
        },
        ignore: [
            './node_modules/**',
-           './dist/**',
+           './dist/**/*.js',
+           './dist/**/*.map',
            './package.json',
-           './package-lock.json'
+           './package-lock.json',
+           './dbscripts/**'
        ]
 
    }).on('restart', () => {
