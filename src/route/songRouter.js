@@ -12,8 +12,41 @@ const routes = (Song) => {
                     console.error(err);
                     res.status(500).send(err);
                 } else {
-                    console.info(songs);
-                    res.json(songs);
+                    res.format({
+                        'application/json': () => {
+                            res.json(songs);
+                        },
+                        'application/xml': () => {
+                            res.write('<songs>\n');
+
+                            songs.forEach((song) => {
+                                let comments = "";
+                                song.comments.forEach((comment) => {
+                                    comments = `
+                                        ${comments}
+                                        <comment>
+                                            <username>${comment.username}</username>
+                                            <date>${comment.date}</date>
+                                            <content>${comment.content}</content>
+                                        </comment>
+                                    `;
+                                });
+
+                                res.write(`
+                                    <entry>
+                                        <title>${song.title}</title>
+                                        <artist>${song.artist}</artist>
+                                        <album>${song.album}</album>
+                                        <type>${song.type}</type>
+                                        <release_date>${song.release_date}</release_date>
+                                        <best_lyric>${song.best_lyric}</best_lyric>
+                                        <comments>${comments}</comments>
+                                    </entry>
+                                `);
+                            });
+                            res.end('</songs>');
+                        }
+                    });
                 }
             });
         })
