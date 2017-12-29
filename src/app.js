@@ -3,6 +3,11 @@
 
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
+const Song = require('./model/song');
+
+const songRouter = require('./route/songRouter')(Song);
 
 const mongoDB = 'mongodb://127.0.0.1/music_api';
 mongoose.connect(mongoDB, {
@@ -13,29 +18,15 @@ mongoose.connect(mongoDB, {
 // mongoose.Promise = global.Promise;
 
 const db = mongoose.connection;
-const Song = require('./model/song');
 
 const app = express();
 
+app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.json());
+
 const port = process.env.PORT || 3000;
 
-const songRouter = express.Router();
-
-songRouter.route('/songs')
-    .get((req, res) => {
-
-        Song.find((err, songs) => {
-            if (err) {
-                console.error(err);
-                res.send(err);
-            } else {
-                console.info(songs);
-                res.json(songs);
-            }
-        });
-    });
-
-app.use('/api', songRouter);
+app.use('/api/song', songRouter);
 
 app.get('/', (req, res) => {
     res.send('{ "title" : "Welcome to the Song API!" }');

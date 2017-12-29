@@ -25,11 +25,16 @@ npm install gulp-babel --save
 npm install gulp-sourcemaps --save
 npm install gulp-concat --save
 npm install babel-core --save
+npm install gulp-livereload --save
 
 # You can now run the project by simply calling 'gulp'
 gulp
 
+# Install mongoose for mapping the MongoDB database objects
 npm install mongoose --save
+
+# Install body-parser to parse HTTP POST bodies by their MIME type
+npm install body-parser --save
 
 # See all processes running on PORT 3000 and kill that process
 sudo lsof -i tcp:3000
