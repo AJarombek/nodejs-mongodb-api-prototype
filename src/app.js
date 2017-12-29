@@ -21,6 +21,10 @@ const db = mongoose.connection;
 
 const app = express();
 
+// Use effective javascript templating (ejs) for rendering xml
+app.set('views', __dirname + '/view');
+app.set('view engine', 'ejs');
+
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 

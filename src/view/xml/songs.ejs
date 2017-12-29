@@ -1,0 +1,21 @@
+<songs>
+    <% for (var i = 0; i < songs.length; i++) { %>
+        <song>
+            <title><%= songs[i].title %></title>
+            <artist><%= songs[i].artist %></artist>
+            <album><%= songs[i].album %></album>
+            <type><%= songs[i].type %></type>
+            <release_date><%= songs[i].release_date %></release_date>
+            <best_lyric><%= songs[i].best_lyric %></best_lyric>
+            <comments>
+                <% for (var j = 0; j < songs[i].comments.length; j++) { %>
+                    <comment>
+                        <username><%= songs[i].comments[j].username %></username>
+                        <date><%= songs[i].comments[j].date %></date>
+                        <content><%= songs[i].comments[j].content %></content>
+                    </comment>
+                <% } %>
+            </comments>
+        </song>
+    <% } %>
+</songs>

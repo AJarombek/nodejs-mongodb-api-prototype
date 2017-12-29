@@ -33,9 +33,10 @@ gulp.task('default', ['watch'], () => {
 
 // The 'watch' task will wait for changes in the source files and when they occur invoke
 // the 'transpile' task.
-gulp.task('watch', ['transpile'], () => {
+gulp.task('watch', ['transpile', 'move'], () => {
     livereload.listen();
     gulp.watch('./src/**/*.js', ['transpile']);
+    gulp.watch('./src/view/**/*.ejs', ['move']);
 });
 
 // The transpile task invokes babel to convert ES6+ code into ES5
@@ -48,4 +49,9 @@ gulp.task('transpile', () => {
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./dist'))
         .pipe(livereload());
+});
+
+gulp.task('move', () => {
+    gulp.src('./src/view/**/*.ejs')
+        .pipe(gulp.dest('./dist/view'));
 });
