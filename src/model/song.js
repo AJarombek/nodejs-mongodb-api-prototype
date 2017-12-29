@@ -15,16 +15,18 @@ const CommentSchema = new Schema({
 
 const SongSchema = new Schema({
     title: {
-       type: String,
-       trim: true
+        type: String,
+        trim: true,
+        required: true
     },
     album: {
-       type: String,
-       trim: true
+        type: String,
+        trim: true
     },
     artist: {
         type: String,
-        trim: true
+        trim: true,
+        required: true
     },
     type: {
         type: String,
@@ -33,8 +35,7 @@ const SongSchema = new Schema({
     release_date: String,
     best_lyric: String,
     comments: [{
-        type: CommentSchema,
-        required: true
+        type: CommentSchema
     }]
 });
 

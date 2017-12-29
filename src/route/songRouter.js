@@ -21,8 +21,13 @@ const routes = (Song) => {
             const song = new Song(req.body);
             console.info(song);
 
-            song.save();
-            res.status(201).send(song);
+            song.save((err) => {
+                if (err) {
+                    res.status(500).send(err);
+                } else {
+                    res.status(201).json(song);
+                }
+            });
         });
 
     // Middleware that will be called before handing off to the route
@@ -52,8 +57,44 @@ const routes = (Song) => {
             req.song.type = req.body.type;
             req.song.release_date = new Date(req.body.release_date);
             req.song.best_lyric = req.body.best_lyric;
-            req.song.save();
-            res.json(req.song);
+            req.song.save((err) => {
+                if (err) {
+                    res.status(500).send(err);
+                } else {
+                    res.json(req.song);
+                }
+            });
+        })
+        .patch((req, res) => {
+            if (req.body._id)
+                delete req.body._id;
+            if (req.body.comments)
+                delete req.body.comments;
+
+            for (let item in req.body) {
+                if (item === 'release_date') {
+                    req.song[item] = new Date(req.body[item]);
+                } else {
+                    req.song[item] = req.body[item];
+                }
+            }
+
+            req.song.save((err) => {
+                if (err) {
+                    res.status(500).send(err);
+                } else {
+                    res.json(req.song);
+                }
+            })
+        })
+        .delete((req, res) => {
+            req.song.remove((err) => {
+                if (err) {
+                    res.status(500).send(err);
+                } else {
+                    res.status(204).send('Song Removed');
+                }
+            })
         });
 
     return songRouter;
