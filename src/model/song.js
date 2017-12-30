@@ -15,7 +15,7 @@ const CommentSchema = new Schema({
         type: String,
         trim: true
     }
-});
+}, {_id : false});
 
 const SongSchema = new Schema({
     title: {

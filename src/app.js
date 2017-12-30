@@ -9,7 +9,7 @@ const Song = require('./model/song');
 const Artist = require('./model/artist');
 const User = require('./model/user');
 
-const songRouter = require('./route/songRouter')(Song);
+const songRouter = require('./route/songRouter')(Song, Artist);
 const artistRouter = require('./route/artistRouter')(Artist);
 const userRouter = require('./route/userRouter')(User);
 

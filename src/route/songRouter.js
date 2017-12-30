@@ -1,15 +1,17 @@
 // Author: Andrew Jarombek
 // Date: 12/28/2017
+// Routes for the Song REST API
 
 const express = require('express');
 
-const routes = (Song) => {
+const routes = (Song, Artist) => {
 
     const songRouter = express.Router();
 
     songRouter.route('/')
         .get((req, res) => {
 
+            // Get all songs in the collection
             Song.find().exec()
                 .then((songs) => {
                     res.format({
@@ -30,19 +32,77 @@ const routes = (Song) => {
             const song = new Song(req.body);
             console.info(song);
 
+            // Add a new song to the collection.
             song.save()
                 .then(() => {
-                    res.format({
-                    'application/json': () => {
-                        res.status(201).json(song);
-                    },
-                    'application/xml': () => {
-                        res.status(201).render('xml/song', {song: song});
+
+                    // If the song has an album specified, we also want to add the album and song to
+                    // the artist document
+                    if (song.album) {
+                        Artist.findOne({'name': song.artist}).exec()
+                            .then((artist) => {
+                                if (!artist) {
+                                    artist = new Artist();
+                                    artist.name = song.artist;
+                                    artist.albums = [];
+                                }
+
+                                console.info(artist);
+
+                                // Check through all the artists albums for matches.  If a match is found, add
+                                // the new song to this existing album
+                                let albumExists = false;
+                                artist.albums.forEach((album) => {
+
+                                    if (album.title === song.album) {
+
+                                        album.songs.push({'name': song.title, 'song_id': song._id});
+                                        console.info(album);
+                                        albumExists = true;
+                                    }
+                                });
+
+                                if (!albumExists) {
+                                    artist.albums.push({
+                                        'title': song.album,
+                                        'songs': [
+                                            {'name': song.name, 'song_id': song._id}
+                                        ]
+                                    })
+                                }
+
+                                console.info("\n" + artist.albums);
+
+                                return artist.save()
+                            }).then(() => {
+                                res.format({
+                                    'application/json': () => {
+                                        res.status(201).json(song);
+                                    },
+                                    'application/xml': () => {
+                                        res.status(201).render('xml/song', {song: song});
+                                    }
+                                });
+                            }).catch((err) => {
+                                console.info(err);
+                                res.status(500).send(err);
+                            });
+
+                    } else {
+                        res.format({
+                            'application/json': () => {
+                                res.status(201).json(song);
+                            },
+                            'application/xml': () => {
+                                res.status(201).render('xml/song', {song: song});
+                            }
+                        });
                     }
+
+                }).catch((err) => {
+                    console.info(err);
+                    res.status(500).send(err);
                 });
-            }).catch((err) => {
-                res.status(500).send(err);
-            });
         });
 
     // Middleware that will be called before handing off to the route
@@ -65,6 +125,7 @@ const routes = (Song) => {
 
     songRouter.route('/:id')
         .get((req, res) => {
+            // Get a single song document
             res.format({
                 'application/json': () => {
                     res.json(req.song);
@@ -75,6 +136,7 @@ const routes = (Song) => {
             });
         })
         .put((req, res) => {
+            // Change all the fields in an existing document and update
             req.song.title = req.body.title;
             req.song.artist = req.body.artist;
             req.song.album = req.body.album;
@@ -105,6 +167,7 @@ const routes = (Song) => {
                 });
         })
         .patch((req, res) => {
+            // Update only the properties specified in the http body to a document
             if (req.body._id)
                 delete req.body._id;
             if (req.body.comments)
@@ -134,6 +197,7 @@ const routes = (Song) => {
                 });
         })
         .delete((req, res) => {
+            // Delete a single document
             req.song.remove()
                 .then(() => {
                     res.status(204).send();
