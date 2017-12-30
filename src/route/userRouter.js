@@ -1,5 +1,6 @@
 // Author: Andrew Jarombek
 // Date: 12/29/2017
+// Routes for the User REST API
 
 const express = require('express');
 

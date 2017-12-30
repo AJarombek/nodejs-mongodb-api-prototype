@@ -48,4 +48,22 @@ const SongSchema = new Schema({
     }]
 }, {usePushEach: true});
 
+// Add indexes for text search
+SongSchema.index(
+    {
+        'title': 'text',
+        'album': 'text',
+        'artist': 'text',
+        'best_lyric': 'text'
+    },
+    {
+        'weights': {
+            'title': 10,
+            'album': 5,
+            'artist': 8,
+            'best_lyric': 2
+        }
+    }
+);
+
 module.exports = mongoose.model('Song', SongSchema, 'song');

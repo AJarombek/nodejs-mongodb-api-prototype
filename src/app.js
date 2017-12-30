@@ -14,6 +14,7 @@ const songRouter = require('./route/songRouter')(Song, Artist);
 const artistRouter = require('./route/artistRouter')(Artist);
 const userRouter = require('./route/userRouter')(User);
 const commentRouter = require('./route/commentRouter')(Song);
+const searchRouter = require('./route/searchRouter')(Song);
 
 // Replace mongoose use of callbacks with promises
 mongoose.Promise = global.Promise;
@@ -40,6 +41,7 @@ app.use('/api/song', songRouter);
 app.use('/api/artist', artistRouter);
 app.use('/api/user', userRouter);
 app.use('/api/comment', commentRouter);
+app.use('/api/search', searchRouter);
 
 app.get('/', (req, res) => {
     res.send('{ "title" : "Welcome to the Song API!" }');
