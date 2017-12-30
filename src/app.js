@@ -5,6 +5,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const basicAuth = require('express-basic-auth');
 
 const Song = require('./model/song');
 const Artist = require('./model/artist');
@@ -34,6 +35,11 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
+
+// Implement basic authentication - username 'a' and password 'j' for all api requests
+app.use(basicAuth({
+    users: {'a': 'j'}
+}));
 
 const port = process.env.PORT || 3000;
 

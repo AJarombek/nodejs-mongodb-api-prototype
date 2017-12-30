@@ -39,3 +39,6 @@ npm install body-parser --save
 # See all processes running on PORT 3000 and kill that process
 sudo lsof -i tcp:3000
 kill -9 51904
+
+# Basic authentication for http requests
+npm install express-basic-auth --save
