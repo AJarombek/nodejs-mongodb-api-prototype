@@ -1,5 +1,6 @@
 // Author: Andrew Jarombek
 // Date: 12/27/2017
+// Configure the entire node.js app
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -12,6 +13,7 @@ const User = require('./model/user');
 const songRouter = require('./route/songRouter')(Song, Artist);
 const artistRouter = require('./route/artistRouter')(Artist);
 const userRouter = require('./route/userRouter')(User);
+const commentRouter = require('./route/commentRouter')(Song);
 
 // Replace mongoose use of callbacks with promises
 mongoose.Promise = global.Promise;
@@ -37,6 +39,7 @@ const port = process.env.PORT || 3000;
 app.use('/api/song', songRouter);
 app.use('/api/artist', artistRouter);
 app.use('/api/user', userRouter);
+app.use('/api/comment', commentRouter);
 
 app.get('/', (req, res) => {
     res.send('{ "title" : "Welcome to the Song API!" }');

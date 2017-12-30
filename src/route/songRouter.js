@@ -47,8 +47,6 @@ const routes = (Song, Artist) => {
                                     artist.albums = [];
                                 }
 
-                                console.info(artist);
-
                                 // Check through all the artists albums for matches.  If a match is found, add
                                 // the new song to this existing album
                                 let albumExists = false;
@@ -57,7 +55,6 @@ const routes = (Song, Artist) => {
                                     if (album.title === song.album) {
 
                                         album.songs.push({'name': song.title, 'song_id': song._id});
-                                        console.info(album);
                                         albumExists = true;
                                     }
                                 });
@@ -66,7 +63,7 @@ const routes = (Song, Artist) => {
                                     artist.albums.push({
                                         'title': song.album,
                                         'songs': [
-                                            {'name': song.name, 'song_id': song._id}
+                                            {'name': song.title, 'song_id': song._id}
                                         ]
                                     })
                                 }
@@ -84,7 +81,6 @@ const routes = (Song, Artist) => {
                                     }
                                 });
                             }).catch((err) => {
-                                console.info(err);
                                 res.status(500).send(err);
                             });
 
@@ -100,7 +96,6 @@ const routes = (Song, Artist) => {
                     }
 
                 }).catch((err) => {
-                    console.info(err);
                     res.status(500).send(err);
                 });
         });

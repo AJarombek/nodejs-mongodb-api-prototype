@@ -1,5 +1,6 @@
 // Author: Andrew Jarombek
 // Date: 12/28/2017
+// The Schema for the Song Document in MongoDB
 
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
@@ -15,7 +16,7 @@ const CommentSchema = new Schema({
         type: String,
         trim: true
     }
-}, {_id : false});
+}, {usePushEach: true, _id : false});
 
 const SongSchema = new Schema({
     title: {
@@ -45,6 +46,6 @@ const SongSchema = new Schema({
     comments: [{
         type: CommentSchema
     }]
-});
+}, {usePushEach: true});
 
 module.exports = mongoose.model('Song', SongSchema, 'song');
