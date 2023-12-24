@@ -1,5 +1,9 @@
 # nodejs-mongodb-api-prototype
 
+![Maintained Label](https://img.shields.io/badge/Maintained-No-red?style=for-the-badge)
+![Deprecated Label](https://img.shields.io/badge/Deprecated-Yes-lightgray?style=for-the-badge)
+![Archived Label](https://img.shields.io/badge/Archived-Yes-lightgray?style=for-the-badge)
+
 This is a prototype that utilizes the MongoDB database and Node.JS environment to create an API.  The API contains songs with 
 user comments, profiles, artist profiles etc.  The API is RESTful and supports all CRUD operations.
 
